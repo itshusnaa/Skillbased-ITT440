@@ -1,0 +1,27 @@
+import socket
+
+def main():
+    SERVER_IP = "192.168.81.129"
+    SERVER_PORT = 8888
+
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    try:
+
+        server_address = (SERVER_IP, SERVER_PORT)
+        client_socket.connect(server_address)
+
+        quote = client_socket.recv(1024).decode('utf-8')
+
+        print("The quote received from server: {}".format(quote))
+
+    except Exception as e:
+        print("An error has occurred:", str(e))
+
+    finally:
+        client_socket.close()
+
+if __name__ == "__main__":
+    main()
+
