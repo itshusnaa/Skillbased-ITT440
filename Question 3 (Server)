@@ -1,0 +1,35 @@
+import socket
+
+def convert_to_atmosphere(pressure_bar):
+
+    return pressure_bar / 1.01325
+
+def main():
+
+    svr_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+
+    server_address = ('0.0.0.0', 8443)
+    svr_socket.bind(server_address)
+
+
+    svr_socket.listen(1)
+
+    print("The server is ready to receive the pressure values.")
+
+    while True:
+
+        connection, client_address = svr_socket.accept()
+
+        try:
+
+            data = connection.recv(1024)
+            pressure_bar = float(data.decode())
+            pressure_atmosphere = convert_to_atmosphere(pressure_bar)
+            connection.sendall(str(pressure_atmosphere).encode())
+
+        finally:
+            connection.close()
+
+if __name__ == "__main__":
+    main()
